@@ -67,6 +67,12 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
 
       config.headers.Authorization = formatToken(accessStore.accessToken);
       config.headers['Accept-Language'] = preferences.app.locale;
+
+      // 如果请求数据是FormData，不设置Content-Type，让浏览器自动设置
+      if (config.data instanceof FormData) {
+        delete config.headers['Content-Type'];
+      }
+
       return config;
     },
   });
@@ -99,7 +105,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       const responseData = error?.response?.data ?? {};
       const errorMessage = responseData?.error ?? responseData?.message ?? '';
       // 如果没有错误信息，则会根据状态码进行提示
-      message.error(errorMessage || msg);
+      message.error(errorMessage || msg).then(() => {});
     }),
   );
 

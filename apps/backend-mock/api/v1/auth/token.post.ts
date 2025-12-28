@@ -12,7 +12,11 @@ import {
 } from '~/utils/response';
 
 export default defineEventHandler(async (event) => {
-  const { password, username } = await readBody(event);
+  const body = await readBody(event);
+  
+  // 从form-data或JSON中提取用户名和密码
+  const { password, username } = body;
+  
   if (!password || !username) {
     setResponseStatus(event, 400);
     return useResponseError(
@@ -36,7 +40,10 @@ export default defineEventHandler(async (event) => {
   setRefreshTokenCookie(event, refreshToken);
 
   return useResponseSuccess({
-    ...findUser,
-    accessToken,
+    code: 0,
+    data: {
+      ...findUser,
+      accessToken,
+    },
   });
 });
