@@ -4,7 +4,7 @@ export namespace AuthApi {
   /** 登录接口参数 */
   export interface LoginParams {
     password?: string;
-    username?: string;
+    account?: string;
   }
 
   /** 登录接口返回值 */
@@ -22,17 +22,16 @@ export namespace AuthApi {
  * 登录
  */
 export async function loginApi(data: AuthApi.LoginParams) {
-  const formData = new FormData();
-
-  if (data.username !== null && data.username !== '') {
-    formData.append('username', String(data.username));
+  // 将 account 字段映射为 username 字段以兼容后端
+  const requestData = {
+    ...data,
+    username: data.account,
+  };
+  if ('account' in requestData) {
+    delete requestData.account;
   }
 
-  if (data.password !== null && data.password !== '') {
-    formData.append('password', String(data.password));
-  }
-
-  return requestClient.post<AuthApi.LoginResult>('/v1/auth/token', formData);
+  return requestClient.post<AuthApi.LoginResult>('/v1/auth/login', requestData);
 }
 
 /**

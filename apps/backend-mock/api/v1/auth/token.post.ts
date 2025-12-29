@@ -12,10 +12,10 @@ import {
 } from '~/utils/response';
 
 export default defineEventHandler(async (event) => {
+  // 兼容 account 和 username 字段
   const body = await readBody(event);
-  
-  // 从form-data或JSON中提取用户名和密码
-  const { password, username } = body;
+  const { password, account, username: originalUsername } = body;
+  const username = account || originalUsername;
   
   if (!password || !username) {
     setResponseStatus(event, 400);

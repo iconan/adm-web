@@ -82,7 +82,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
     defaultResponseInterceptor({
       codeField: 'code',
       dataField: 'data',
-      successCode: '00000',
+      successCode: '0',
     }),
   );
 

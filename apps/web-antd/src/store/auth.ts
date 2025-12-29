@@ -99,7 +99,8 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function fetchUserInfo() {
-    let userInfo: null | UserInfo = null;
+    let userInfo: null | UserInfo;
+    // eslint-disable-next-line prefer-const
     userInfo = await getUserInfoApi();
     userStore.setUserInfo(userInfo);
     return userInfo;
