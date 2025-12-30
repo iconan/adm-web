@@ -64,7 +64,7 @@ const formSchema = computed((): VbenFormSchema[] => {
     {
       component: 'VbenInput',
       componentProps: {
-        placeholder: $t('authentication.accountTip'),
+        placeholder: $t('authentication.usernameTip'),
       },
       dependencies: {
         trigger(values, form) {
@@ -75,16 +75,16 @@ const formSchema = computed((): VbenFormSchema[] => {
             if (findUser) {
               form.setValues({
                 password: '123456',
-                account: findUser.value,
+                username: findUser.value,
               });
             }
           }
         },
         triggerFields: ['selectAccount'],
       },
-      fieldName: 'account',
-      label: $t('authentication.account'),
-      rules: z.string().min(1, { message: $t('authentication.accountTip') }),
+      fieldName: 'username',
+      label: $t('authentication.username'),
+      rules: z.string().min(1, { message: $t('authentication.usernameTip') }),
     },
     {
       component: 'VbenInputPassword',
