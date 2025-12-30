@@ -9,7 +9,8 @@ export namespace AuthApi {
 
   /** 登录接口返回值 */
   export interface LoginResult {
-    accessToken: string;
+    access_token: string;
+    token_type: string;
   }
 
   export interface RefreshTokenResult {
@@ -22,16 +23,12 @@ export namespace AuthApi {
  * 登录
  */
 export async function loginApi(data: AuthApi.LoginParams) {
-  // 将 account 字段映射为 username 字段以兼容后端
   const requestData = {
-    ...data,
-    username: data.account,
+    account: data.account,
+    password: data.password,
   };
-  if ('account' in requestData) {
-    delete requestData.account;
-  }
 
-  return requestClient.post<AuthApi.LoginResult>('/v1/auth/login', requestData);
+  return requestClient.post<AuthApi.LoginResult>('/v1/auth/token', requestData);
 }
 
 /**
@@ -59,5 +56,5 @@ export async function logoutApi() {
  * 获取用户权限码
  */
 export async function getAccessCodesApi() {
-  return requestClient.get<string[]>('/auth/codes');
+  return requestClient.get<string[]>('/v1/auth/codes');
 }
